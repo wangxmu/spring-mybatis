@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.wangyong.dao.DiskInfoDao">
+  <resultMap id="BaseResultMap" type="com.zte.wangyong.pojo.DiskInfo">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="FileSystem" jdbcType="VARCHAR" property="filesystem" />
+    <result column="Size" jdbcType="DOUBLE" property="size" />
+    <result column="Used" jdbcType="DOUBLE" property="used" />
+    <result column="Avail" jdbcType="DOUBLE" property="avail" />
+    <result column="UseAge" jdbcType="DOUBLE" property="useage" />
+    <result column="MountedOn" jdbcType="VARCHAR" property="mountedon" />
+    <result column="OperatingTime" jdbcType="TIMESTAMP" property="operatingtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, FileSystem, Size, Used, Avail, UseAge, MountedOn, OperatingTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from diskinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from diskinfo
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from diskinfo
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.zte.wangyong.pojo.DiskInfo">
+    insert into diskinfo (Id, FileSystem, Size, 
+      Used, Avail, UseAge, MountedOn, 
+      OperatingTime)
+    values (#{id,jdbcType=INTEGER}, #{filesystem,jdbcType=VARCHAR}, #{size,jdbcType=DOUBLE}, 
+      #{used,jdbcType=DOUBLE}, #{avail,jdbcType=DOUBLE}, #{useage,jdbcType=DOUBLE}, #{mountedon,jdbcType=VARCHAR}, 
+      #{operatingtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zte.wangyong.pojo.DiskInfo">
+    insert into diskinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="filesystem != null">
+        FileSystem,
+      </if>
+      <if test="size != null">
+        Size,
+      </if>
+      <if test="used != null">
+        Used,
+      </if>
+      <if test="avail != null">
+        Avail,
+      </if>
+      <if test="useage != null">
+        UseAge,
+      </if>
+      <if test="mountedon != null">
+        MountedOn,
+      </if>
+      <if test="operatingtime != null">
+        OperatingTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="filesystem != null">
+        #{filesystem,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        #{size,jdbcType=DOUBLE},
+      </if>
+      <if test="used != null">
+        #{used,jdbcType=DOUBLE},
+      </if>
+      <if test="avail != null">
+        #{avail,jdbcType=DOUBLE},
+      </if>
+      <if test="useage != null">
+        #{useage,jdbcType=DOUBLE},
+      </if>
+      <if test="mountedon != null">
+        #{mountedon,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingtime != null">
+        #{operatingtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zte.wangyong.pojo.DiskInfo">
+    update diskinfo
+    <set>
+      <if test="filesystem != null">
+        FileSystem = #{filesystem,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null">
+        Size = #{size,jdbcType=DOUBLE},
+      </if>
+      <if test="used != null">
+        Used = #{used,jdbcType=DOUBLE},
+      </if>
+      <if test="avail != null">
+        Avail = #{avail,jdbcType=DOUBLE},
+      </if>
+      <if test="useage != null">
+        UseAge = #{useage,jdbcType=DOUBLE},
+      </if>
+      <if test="mountedon != null">
+        MountedOn = #{mountedon,jdbcType=VARCHAR},
+      </if>
+      <if test="operatingtime != null">
+        OperatingTime = #{operatingtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zte.wangyong.pojo.DiskInfo">
+    update diskinfo
+    set FileSystem = #{filesystem,jdbcType=VARCHAR},
+      Size = #{size,jdbcType=DOUBLE},
+      Used = #{used,jdbcType=DOUBLE},
+      Avail = #{avail,jdbcType=DOUBLE},
+      UseAge = #{useage,jdbcType=DOUBLE},
+      MountedOn = #{mountedon,jdbcType=VARCHAR},
+      OperatingTime = #{operatingtime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
