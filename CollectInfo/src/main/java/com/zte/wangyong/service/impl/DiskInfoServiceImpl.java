@@ -12,7 +12,6 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
-import org.apache.log4j.chainsaw.Main;
 import org.springframework.stereotype.Service;
 
 import com.jcraft.jsch.Channel;
@@ -61,28 +60,29 @@ public class DiskInfoServiceImpl implements DiskInfoService {
 			reader = new BufferedReader(new InputStreamReader(input));
 			String buf = null;
 			String filesystem = null;
-			Double size = null;
-			Double used = null;
-			Double avail = null;
-			Double useage = null;
+			String size = null;
+			String used = null;
+			String avail = null;
+			String useage = null;
 			String mountedon = null;
 			Date operatingtime = null;
 			int count = 0;
+			this.diskInfoDao.truncateAll();
 			while ((buf = reader.readLine()) != null) {
 				System.out.println(buf);
 				String[] diskinfo = buf.split("\\s+");
-				filesystem = diskinfo[0];
-				size = Double.parseDouble(diskinfo[1]);
-				used = Double.parseDouble(diskinfo[2]);
-				avail = Double.parseDouble(diskinfo[3]);
-				useage = Double.parseDouble(diskinfo[4]);
-				mountedon = diskinfo[5];
-				operatingtime = new Date();
+				if (!(diskinfo[0].equals("Filesystem"))) {
+					filesystem = diskinfo[0];
+					size = diskinfo[1];
+					used = diskinfo[2];
+					avail = diskinfo[3];
+					useage = diskinfo[4];
+					mountedon = diskinfo[5];
+					operatingtime = new Date();
 
-				List<DiskInfo> diskInfoLists = this.diskInfoDao.selectAll();
-				if (diskInfoLists.size() == 0) {
 					DiskInfo diskInfo = new DiskInfo();
-					diskInfo.setId(1);
+					count++;
+					diskInfo.setId(count);
 					diskInfo.setFilesystem(filesystem);
 					diskInfo.setSize(size);
 					diskInfo.setUsed(used);
@@ -92,23 +92,25 @@ public class DiskInfoServiceImpl implements DiskInfoService {
 					diskInfo.setOperatingtime(operatingtime);
 
 					this.diskInfoDao.insert(diskInfo);
-				} else {
-					List<Integer> mylist = new ArrayList<Integer>();
-					for (DiskInfo diskInfo : diskInfoLists) {
-						mylist.add(diskInfo.getId());
-					}
-					minIndex = Collections.min(mylist);
-					DiskInfo diskInfo = new DiskInfo();
-					diskInfo.setId(minIndex + count);
-					diskInfo.setFilesystem(filesystem);
-					diskInfo.setSize(size);
-					diskInfo.setUsed(used);
-					diskInfo.setAvail(avail);
-					diskInfo.setUseage(useage);
-					diskInfo.setMountedon(mountedon);
-					diskInfo.setOperatingtime(operatingtime);
-					count++;
-					this.diskInfoDao.updateByPrimaryKey(diskInfo);
+
+					// } else {
+					// List<Integer> mylist = new ArrayList<Integer>();
+					// for (DiskInfo diskInfo : diskInfoLists) {
+					// mylist.add(diskInfo.getId());
+					// }
+					// minIndex = Collections.min(mylist);
+					// DiskInfo diskInfo = new DiskInfo();
+					// diskInfo.setId(minIndex + count);
+					// diskInfo.setFilesystem(filesystem);
+					// diskInfo.setSize(size);
+					// diskInfo.setUsed(used);
+					// diskInfo.setAvail(avail);
+					// diskInfo.setUseage(useage);
+					// diskInfo.setMountedon(mountedon);
+					// diskInfo.setOperatingtime(operatingtime);
+					// count++;
+					// this.diskInfoDao.updateByPrimaryKey(diskInfo);
+					// }
 				}
 			}
 		} catch (IOException e) {

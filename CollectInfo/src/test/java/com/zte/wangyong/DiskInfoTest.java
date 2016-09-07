@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.chainsaw.Main;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -30,8 +33,7 @@ public class DiskInfoTest {
 	// }
 
 	@Test
-	public void test2() {
-		System.out.println("=================");
+	public void test() {
 		ArrayList<DiskInfo> diskInfolists = null;
 		try {
 			diskInfolists = (ArrayList<DiskInfo>) diskInfoService.execCmd("df -h", "sx", "sx", "10.45.44.208");

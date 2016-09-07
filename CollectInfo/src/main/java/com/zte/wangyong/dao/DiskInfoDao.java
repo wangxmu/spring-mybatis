@@ -6,6 +6,8 @@ import com.zte.wangyong.pojo.DiskInfo;
 
 public interface DiskInfoDao {
     int deleteByPrimaryKey(Integer id);
+    
+    void truncateAll();
 
     int insert(DiskInfo record);
 
