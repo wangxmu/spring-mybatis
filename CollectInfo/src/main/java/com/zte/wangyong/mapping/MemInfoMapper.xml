@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zte.wangyong.dao.MemInfoDao">
+	<!-- 解决列名不匹配问题 -->
+	<resultMap id="BaseResultMap" type="com.zte.wangyong.pojo.MemInfo">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="totalMem" jdbcType="DECIMAL" property="totalmem" />
+		<result column="usedMem" jdbcType="DECIMAL" property="usedmem" />
+		<result column="freeMem" jdbcType="DECIMAL" property="freemem" />
+		<result column="useAge" jdbcType="DECIMAL" property="useage" />
+		<result column="operatingTime" jdbcType="TIMESTAMP" property="operatingtime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, totalMem, usedMem, freeMem, useAge,operatingTime
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from test1
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select * from test1
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from test1
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.zte.wangyong.pojo.MemInfo">
+		insert into test1 ( totalMem,
+		usedMem,
+		freeMem, useAge, operatingTime)
+		values
+		(#{totalmem,jdbcType=DECIMAL},
+		#{usedmem,jdbcType=DECIMAL},
+		#{freemem,jdbcType=DECIMAL},
+		#{useage,jdbcType=DECIMAL},#{operatingtime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.zte.wangyong.pojo.MemInfo">
+		insert into test1
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="totalmem != null">
+				totalMem,
+			</if>
+			<if test="usedmem != null">
+				usedMem,
+			</if>
+			<if test="freemem != null">
+				freeMem,
+			</if>
+			<if test="useage != null">
+				useAge,
+			</if>
+			<if test="operatingtime != null">
+				operatingTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="totalmem != null">
+				#{totalmem,jdbcType=DECIMAL},
+			</if>
+			<if test="usedmem != null">
+				#{usedmem,jdbcType=DECIMAL},
+			</if>
+			<if test="freemem != null">
+				#{freemem,jdbcType=DECIMAL},
+			</if>
+			<if test="useage != null">
+				#{useage,jdbcType=DECIMAL},
+			</if>
+			<if test="operatingtime != null">
+				#{operatingtime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.zte.wangyong.pojo.MemInfo">
+		update test1
+		<set>
+			<if test="totalmem != null">
+				totalMem = #{totalmem,jdbcType=DECIMAL},
+			</if>
+			<if test="usedmem != null">
+				usedMem = #{usedmem,jdbcType=DECIMAL},
+			</if>
+			<if test="freemem != null">
+				freeMem = #{freemem,jdbcType=DECIMAL},
+			</if>
+			<if test="useage != null">
+				useAge = #{useage,jdbcType=DECIMAL},
+			</if>
+			<if test="operatingtime != null">
+				operatingTime = #{operatingtime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.zte.wangyong.pojo.MemInfo">
+		update test1
+		set
+		totalMem = #{totalmem,jdbcType=DECIMAL},
+		usedMem
+		=#{usedmem,jdbcType=DECIMAL},
+		freeMem = #{freemem,jdbcType=DECIMAL},
+		useAge = #{useage,jdbcType=DECIMAL},
+		operatingTime =
+		#{operatingtime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

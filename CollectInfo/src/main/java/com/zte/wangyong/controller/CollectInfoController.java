@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jcraft.jsch.JSchException;
 import com.zte.wangyong.pojo.DiskInfo;
-import com.zte.wangyong.service.DiskInfoService;
+import com.zte.wangyong.pojo.MemInfo;
+import com.zte.wangyong.service.CollectInfoService;
 
 /**
  * Handles requests for the application home page.
@@ -27,7 +28,7 @@ import com.zte.wangyong.service.DiskInfoService;
 @Controller
 public class CollectInfoController {
 	@Resource
-	public DiskInfoService diskInfoService;
+	public CollectInfoService collectInfoService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CollectInfoController.class);
 	
@@ -48,11 +49,12 @@ public class CollectInfoController {
 		return "home";
 	}
 	
-	@RequestMapping("/showMemInfo")
+	@RequestMapping("/showInfo")
 	public String toIndex(HttpServletRequest request,Model model) throws JSchException {
-		List<DiskInfo> diskInfo = this.diskInfoService.execCmd("df -h","sx","sx","10.45.44.208");
+		MemInfo memInfo = this.collectInfoService.execMemCmd("free -m", "sx", "sx", "10.45.44.208");
+		List<DiskInfo> diskInfo = this.collectInfoService.execDiskCmd("df -h","sx","sx","10.45.44.208");
 		model.addAttribute("diskInfo", diskInfo);
-		return "showDiskInfo";
-	}
-	
+		model.addAttribute("memInfo", memInfo);		
+		return "showInfo";
+	}	
 }

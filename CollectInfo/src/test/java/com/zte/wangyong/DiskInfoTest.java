@@ -16,15 +16,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.alibaba.fastjson.JSON;
 import com.jcraft.jsch.JSchException;
 import com.zte.wangyong.pojo.DiskInfo;
-import com.zte.wangyong.service.DiskInfoService;
+import com.zte.wangyong.pojo.MemInfo;
+import com.zte.wangyong.service.CollectInfoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring-mybatis.xml" })
 public class DiskInfoTest {
 	private static Logger logger = Logger.getLogger(DiskInfoTest.class);
 	// private ApplicationContext ac = null;
-	@Resource(name = "diskInfoService")
-	public DiskInfoService diskInfoService;
+	@Resource
+	public CollectInfoService collectInfoService;
 
 	// @Before
 	// public void before() {
@@ -34,15 +35,19 @@ public class DiskInfoTest {
 
 	@Test
 	public void test() {
-		ArrayList<DiskInfo> diskInfolists = null;
+		ArrayList<DiskInfo> collectInfolists = null;
+		MemInfo memInfo = null;
 		try {
-			diskInfolists = (ArrayList<DiskInfo>) diskInfoService.execCmd("df -h", "sx", "sx", "10.45.44.208");
+			memInfo = collectInfoService.execMemCmd("free -m", "sx", "sx", "10.45.44.208");
+			collectInfolists = (ArrayList<DiskInfo>) collectInfoService.execDiskCmd("df -h", "sx", "sx",
+					"10.45.44.208");
 		} catch (JSchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// System.out.println(user.getUserName());
 		// logger.info("ֵ��"+user.getUserName());
-		logger.info(JSON.toJSONString(diskInfolists));
+		logger.info(JSON.toJSONString(memInfo));
+		logger.info(JSON.toJSONString(collectInfolists));
 	}
 }
